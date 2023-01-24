@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>task_list</title>
+</head>
+
+<body style="text-align: center; background-color: darkgray;">
+    <h1 style="background-color: aquamarine;">TASK MANAGER</h1>
+    <button><a style="text-decoration: none;" href="{% url 'create_task' %}">Create</a></button>
+    <button><a style="text-decoration: none;" href="">Status</a></button>
+    <div>
+        {% for w in tasks %}
+        <div style="margin: 50px;">
+            <a href="{% url 'task_detail' w.id %}">{{w}}</a>
+        </div>
+
+    </div>
+    {% endfor %}
+    <button><a style="text-decoration: none;" href="{% url 'login' %}">Previous</a></button>
+    <button type="submit"><a style="text-decoration: none;" href="">Next</a></button>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="background-color: lightgrey;text-align: center;">
+    <h1 style="background-color: aqua;">TASK MANAGER</h1>
+
+    <div>
+        <h1>TASK INFORMATION</h1>
+        <div>
+            <p>TASK NAME:{{task_data.task_name}}</p>
+            <p> TASK ID:{{task_data.id}}</p>
+            <p> TASK STATUS:{{task_data.get_Status_display}}</p>
+
+            <div style="margin: 35px;">
+                <button><a href="{% url 'edit_task' task_data.id %}">EDIT</a></button>
+                <button><a style="text-decoration: none;"
+                        href="{% url 'delete_task' task_data.id %}">DELETE</a></button>
+                <button><a style="text-decoration: none;" href="{% url 'task_list' %}">BACK</a></button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div>
+
+
+        <h1>SUB TASK:</h1>
+        <div>
+
+            {% for k in sub_task_data %}
+
+            <div>
+                {{k}}
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+    <div style="margin: 50px;">
+        <form action="{% url 'add_sub_task' %}" method="post">
+            {% csrf_token %}
+            {% for i in data %}
+            <div style="margin-bottom: 50px;">
+                {{i.label}} : {{i}}
+            </div>
+            {% endfor %}
+
+            <button type="submit">submit</button>
+
+        </form>
+
+    </div>
+
+    <div>
+    </div>
+
+
+
+
+</body>
+
+</html>
