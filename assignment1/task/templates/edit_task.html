@@ -1,20 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base_index.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDIT TASK</title>
-</head>
+{% block body %}
 
 <body style="text-align: center;background-color: lightgray;">
     <h1 style="background-color: aqua;">TASK MANAGER</h1>
     <div>
-        <button style="margin: 25px;">SAVE</button><br>
-        <button><a href="">BACK</a></button>
+        <form action="{% url 'edit_task' task.id %}" method="post">
+            {% csrf_token %}
+
+            <h1>EDIT TASK</h1>
+
+            <label for="task_name">Task name : </label>
+            <input type="text" name="task_name" id="task_name" value="{{task.task_name}}"><br>
+
+            <label for="Status"></label>status :
+            <select name="Status" id="Status">
+
+                <option value="">SELECT</option>
+                <option value="1">Not Started</option>
+                <option value="2">In Progres</option>
+                <option value="3">Completed</option>
+
+            </select>
+
+            <div>
+                <button style="margin: 25px;" type="submit">SAVE</button>
+                <button><a href="{% url 'task_detail' task.id %}">BACK</a></button>
+            </div>
+        </form>
     </div>
 
 </body>
 
-</html>
+{% endblock %}

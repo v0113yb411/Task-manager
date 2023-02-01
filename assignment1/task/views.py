@@ -3,9 +3,11 @@ from .forms import TaskForm, SubTaskForm, loginform
 from django.contrib.auth import login, logout, authenticate
 from .models import Task, SubtaskModel, Task
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-
+# from django.contrib.auth.middleware import AuthenticationMiddleware
 # Create your views here.
 
 
@@ -59,21 +61,28 @@ def task_detail(request, pk):
 
 
 @login_required
-def add_sub_task(request):
-    if request.method == 'POST':
-        form = SubTaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('task_list')
-
-
-@login_required
 def task_list(request):
     if request.user.is_authenticated:
         task = Task.objects.filter(owner=request.user.id)
         return render(request, 'task_list.html', {'tasks': task})
     else:
         return HttpResponse('You are not allowed to enter here.')
+
+
+def log_out(request):
+    if request.method == 'GET':
+        logout(request)
+        messages.warning(request, 'logged out successfuly !!!')
+        return redirect('home')
+
+
+@login_required
+def add_sub_task(request):
+    if request.method == 'POST':
+        form = SubTaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('task_list')
 
 
 @login_required
@@ -87,5 +96,21 @@ def delete_task(request, pk):
 @login_required
 def edit_task(request, pk):
     if request.method == 'GET':
+        status = Task.STATUS_CHOICES
+        print(status)
+        task = Task.objects.get(id=pk)
+        print(task)
+        return render(request, 'edit_task.html', {'status': status, 'task': task})
 
-        return render(request, 'edit_task.html')
+    if request.method == 'POST':
+        tname = request.POST['task_name']
+        sname = request.POST['Status']
+        print(sname)
+        current_user = User.objects.get(id=request.user.id)
+        owner = request.user.id
+        user = Task.objects.get(id=pk)
+        user.task_name = tname
+        user.Status = sname
+        user.owner = current_user
+        user.save()
+        return redirect('task_list')
