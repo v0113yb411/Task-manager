@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("task.urls")),
     path('orm/', include("Orm_practice.urls")),
+    path('demo/', include("demoapp.urls")),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]

@@ -1,42 +1,52 @@
 from django.shortcuts import render
-from .models import School
+from .models import School, Student
 from django.shortcuts import render, HttpResponse, redirect
-# Create your views here.
+from django.db.models import Count
+from demoapp.models import Company, Employee, Project
+
+
+def index_demoapp(request):
+
+    context = {
+        'employees': Employee.objects.all()
+    }
+
+    return render(request, 'test.html', context)
 
 
 def practice(request):
 
-    # all.
-    data = School.objects.all()
-    print(data)
+    # # all.
+    # data = School.objects.all()
+    # print(data)
 
-    # Filters.
-    data = School.objects.filter(school_name='Anza')
-    print(data)
+    # # Filters.
+    # data = School.objects.filter(school_name='Anza')
+    # print(data)
 
-    # Excludes.
-    data = School.objects.exclude(school_name='yusuf merali')
-    print(data)
+    # # Excludes.
+    # data = School.objects.exclude(school_name='yusuf merali')
+    # print(data)
 
-    # Order by.
-    data = School.objects.order_by('school_name')
-    print(data)
+    # # Order by.
+    # data = School.objects.order_by('school_name')
+    # print(data)
 
-    # Reverse.
-    data = School.objects.reverse()[0:2]
-    print(data)
+    # # Reverse.
+    # data = School.objects.reverse()[0:2]
+    # print(data)
 
-    # Values.
-    data = School.objects.values('school_name', 'school_students')
-    print(data)
+    # # Values.
+    # data = School.objects.values('school_name', 'school_students')
+    # print(data)
 
-    # Values list
-    data = School.objects.values_list('email_id')
-    print(data)
+    # # Values list
+    # data = School.objects.values_list('email_id')
+    # print(data)
 
-    # Get.
-    data = School.objects.get(id=1)
-    print(data)
+    # # Get.
+    # data = School.objects.get(id=1)
+    # print(data)
 
     # Create.
     # data = School.objects.create(school_name='Vidyamandir',
@@ -71,7 +81,88 @@ def practice(request):
     #               school_students=28)
     # ls = [obj1, obj2]
     # data = School.objects.bulk_create(ls)
-    data = School.objects.all()
-    print(data)
+    # data = School.objects.all()
+    # print(data)
 
-    return HttpResponse('ORM Practice')
+    # Bulk Update.
+
+    # object = [
+    #     School.objects.create(school_name='Anza',
+    #                           # joining_date='2023-05-30',
+    #                           pointer=6.70,
+    #                           email_id='Rucha@123.com',
+    #                           school_students=100),
+    #     School.objects.create(school_name='don bosco',
+    #                           # joining_date='2023-05-30',
+    #                           pointer=10.00,
+    #                           email_id='amruta@123.com',
+    #                           school_students=58),
+    # ]
+
+    # obj1 = School.objects.get(id=25)
+    # obj2 = School.objects.get(id=26)
+    # object = [obj1, obj2]
+    # object[0].school_name = 'St.joseph'
+    # object[1].school_name = 'Miachel high school'
+    # School.objects.bulk_update(object, ['school_name'])
+    # data = School.objects.all()
+    # print(data)
+
+    # Count.
+
+    # data = School.objects.all().count()
+    # print(data)
+
+    # Latest.
+
+    # data = School.objects.latest('id')
+    # print(data)
+
+    # # First.
+
+    # data = School.objects.order_by('id').first()
+    # print(data)
+
+    # Last.
+
+    # data = School.objects.order_by('school_students').last()
+    # print(data)
+
+    # Aggregate.
+
+    # data = School.objects.aggregate(Count('email_id'))
+    # print(data)
+
+    # Exists().
+
+    # data = School.objects.filter(school_students=987).exists()
+    # print(data)
+
+    # Update.
+
+    # data = School.objects.filter(school_name='don bosco').update()
+    # print(data)
+
+    # # Delete.
+
+    # data = School.objects.filter(school_name='ANZA').delete()
+    # print(data)
+
+    # Select Related.
+
+    data = School.objects.select_related('student_details')
+    print(data)
+    for i in data:
+        test = i.student_details.student_name
+        print(test)
+
+    # Prefetch related.
+
+    # data = Students.objects.prefetch_related('school_set')
+    # print(data)
+    # for i in data:
+    #     print(i.school_set.all())
+    #     for j in data:
+    #         print(j.school_set.all())
+
+        return render(request, 'test.html')
